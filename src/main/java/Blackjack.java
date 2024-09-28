@@ -124,6 +124,7 @@ public class Blackjack {
 	
 	// Displays the hands of the dealer and the player.
 	public static void displayHands() {
+		clearScreen();
 		System.out.println("Remaining cards: " + deck.checkRemainingCards());
 		System.out.println("Player money: " + "$" + playerMoney);
 		System.out.println("Player bet: " + "$" + bet);
@@ -182,7 +183,13 @@ public class Blackjack {
 		String winner = (playerWins > dealerWins) ? "Player" : "Dealer";
 		System.out.println(winner + " wins!");
 	}
-	
+
+	public static void clearScreen() {
+		for (int i = 0; i < 50; i++) {
+			System.out.println();
+		}
+	}
+
 	// Main method
 	public static void main(String[] args) {
 		setUpGame();
