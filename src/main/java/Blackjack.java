@@ -22,6 +22,7 @@ public class Blackjack {
 	
 	// Set up the game
 	public static void setUpGame() {
+		getBet("What is your bet? ");
 		dealerHand.add(deck.drawCard());
 		playerHand.add(deck.drawCard());
 		hiddenDealerCard = deck.drawCard();
@@ -164,7 +165,6 @@ public class Blackjack {
         
         resetGame();
         setUpGame();
-        getBet("What is your bet? ");
     }
 	
 	// Main method
