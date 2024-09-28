@@ -22,6 +22,9 @@ public class Blackjack {
 	
 	// Set up the game
 	public static void setUpGame() {
+		if (deck.checkRemainingCards() < 10) {
+			endGame();
+		}
 		getBet("What is your bet? ");
 		dealerHand.add(deck.drawCard());
 		playerHand.add(deck.drawCard());
@@ -172,6 +175,13 @@ public class Blackjack {
         resetGame();
         setUpGame();
     }
+
+	public static void endGame() {
+		System.out.println("Dealer wins: " + dealerWins);
+		System.out.println("Player wins: " + playerWins);
+		String winner = (playerWins > dealerWins) ? "Player" : "Dealer";
+		System.out.println(winner + " wins!");
+	}
 	
 	// Main method
 	public static void main(String[] args) {
