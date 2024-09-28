@@ -25,4 +25,8 @@ class Deck {
 	public boolean isEmpty() {
         return cards.isEmpty();
     }
+
+	public Integer checkRemainingCards() {
+		return cards.size();
+	}
 }

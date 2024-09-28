@@ -116,6 +116,7 @@ public class Blackjack {
 	
 	// Displays the hands of the dealer and the player.
 	public static void displayHands() {
+		System.out.println("Remaining cards: " + deck.checkRemainingCards());
 		System.out.println("Player money: " + "$" + playerMoney);
 		System.out.println("Player bet: " + "$" + bet);
 		System.out.println("Dealer cards " + "(" + checkDealerHandValue() + ")" + ": " + dealerHand.toString()
