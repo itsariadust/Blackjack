@@ -176,7 +176,6 @@ public class Blackjack {
 	// Main method
 	public static void main(String[] args) {
 		setUpGame();
-		getBet("What is your bet? ");
 		while (true) {
 			displayHands();
 			checkIfDealerBlackjack();
