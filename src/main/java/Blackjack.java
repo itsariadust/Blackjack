@@ -55,10 +55,15 @@ public class Blackjack {
 	// When the player stands or is bust
 	public static void dealerPlay() {
 		dealerHand.add(hiddenDealerCard);
-		while (checkDealerHandValue() < 17) {
-			dealerHand.add(deck.drawCard());
+		Integer playerHandValue = checkPlayerHandValue();
+		if (playerHandValue >= 21) {
+			endRound();
+		} else {
+			while (checkDealerHandValue() < 17) {
+				dealerHand.add(deck.drawCard());
+			}
+			endRound();
 		}
-		endRound();
 	}
 	
 	// When the player doubles. They can no longer hit.
