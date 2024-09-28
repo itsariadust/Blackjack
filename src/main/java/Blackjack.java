@@ -14,8 +14,11 @@ public class Blackjack {
 	// Winner tally
 	static Integer dealerWins = 0;
 	static Integer playerWins = 0;
+
+	static Boolean dealerBlackjack = false;
+	static Boolean playerBlackjack = false;
 	
-	static Integer playerMoney = 1000;
+	static double playerMoney = 1000;
 	static Integer bet = 0;
 	
 	static Scanner userInput = new Scanner(System.in);
@@ -91,6 +94,7 @@ public class Blackjack {
 		Integer card2 = actualDealerHand.get(1).getValue();
 		
 		if (card1 + card2 == 21) {
+			dealerBlackjack = true;
 			endRound();
 		}
 	}
@@ -101,6 +105,7 @@ public class Blackjack {
 		Integer card2 = playerHand.get(1).getValue();
 		
 		if (card1 + card2 == 21) {
+			playerBlackjack = true;
 			endRound();
 		}
 	}
@@ -137,13 +142,21 @@ public class Blackjack {
 	// When the player wins
 	public static void playerWins() {
 		playerWins += 1;
-		playerMoney += bet * 2;
+		if (playerBlackjack) {
+			playerMoney += bet * 1.5;
+			playerBlackjack = false;
+		} else {
+			playerMoney += bet * 2;
+		}
 		resetGame();
 	}
 	
 	// When the dealer wins
 	public static void dealerWins() {
 		dealerWins += 1;
+		if (dealerBlackjack) {
+			dealerBlackjack = false;
+		}
 		resetGame();
 	}
 
