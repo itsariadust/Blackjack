@@ -10,10 +10,6 @@ public class Blackjack {
 	Integer dealerWins = 0;
 	Integer playerWins = 0;
 
-	// Blackjack booleans
-	Boolean dealerBlackjack = false;
-	Boolean playerBlackjack = false;
-
 	// User input
 	Scanner userInput = new Scanner(System.in);
 
@@ -48,10 +44,8 @@ public class Blackjack {
 		player.drawCard(deck);
 
 		if (dealer.checkIfDealerBlackjack()) {
-			dealerBlackjack = dealer.checkIfDealerBlackjack();
 			endRound();
 		} else if (player.checkIfPlayerBlackjack()) {
-			playerBlackjack = player.checkIfPlayerBlackjack();
 			endRound();
 		}
 
@@ -90,9 +84,8 @@ public class Blackjack {
 	// When the player wins
 	public void playerWins() {
 		playerWins += 1;
-		if (playerBlackjack) {
+		if (player.checkIfPlayerBlackjack()) {
 			player.setMoney(player.getBet() * 1.5);
-			playerBlackjack = false;
 		} else {
 			player.setMoney(player.getBet() * 2);
 		}
@@ -102,9 +95,6 @@ public class Blackjack {
 	// When the dealer wins
 	public void dealerWins() {
 		dealerWins += 1;
-		if (dealerBlackjack) {
-			dealerBlackjack = false;
-		}
 		resetHands();
 	}
 

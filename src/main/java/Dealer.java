@@ -20,6 +20,11 @@ public class Dealer extends Participant {
         Integer card1 = actualDealerHand.get(0).getValue();
         Integer card2 = actualDealerHand.get(1).getValue();
 
-        return card1 + card2 == 21;
+        if (card1 + card2 == 21) {
+            System.out.println("Blackjack!");
+            return true;
+        } else {
+            return false;
+        }
     }
 }
