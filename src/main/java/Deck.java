@@ -1,7 +1,7 @@
 import java.util.Collections;
 import java.util.Stack;
 
-class Deck {
+public class Deck {
 	private final Stack<Card> cards;
 	
 	public Deck() {
