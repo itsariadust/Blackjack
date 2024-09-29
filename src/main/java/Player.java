@@ -13,7 +13,7 @@ public class Player extends Participant {
 
     public void setBet(double bet) {
         this.bet = bet;
-        setMoney(this.money - this.bet);
+        this.money -= this.bet;
     }
 
     public double getMoney() {
