@@ -1,176 +1,125 @@
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Blackjack {
-	static Deck deck = new Deck();
-	
-	// Hands
-	static ArrayList<Card> dealerHand = new ArrayList<>();
-	static ArrayList<Card> playerHand = new ArrayList<>();
-	static Card hiddenDealerCard; // hiddenDealerCard is for the hidden second card for the dealer's hand.
-	
-	// Winner tally
-	static Integer dealerWins = 0;
-	static Integer playerWins = 0;
+	// Initialize objects
+	private static Deck deck;
+	private static Player player;
+	private static Dealer dealer;
 
-	static Boolean dealerBlackjack = false;
-	static Boolean playerBlackjack = false;
-	
-	static double playerMoney = 1000;
-	static Integer bet = 0;
-	
-	static Scanner userInput = new Scanner(System.in);
-	
-	// Set up the game
-	public static void setUpGame() {
-		if (deck.checkRemainingCards() < 10) {
-			endGame();
+	// Winner tally
+	Integer dealerWins = 0;
+	Integer playerWins = 0;
+
+	// Blackjack booleans
+	Boolean dealerBlackjack = false;
+	Boolean playerBlackjack = false;
+
+	// User input
+	Scanner userInput = new Scanner(System.in);
+
+	public Blackjack() {
+		deck = new Deck();
+		player = new Player(1000);
+		dealer = new Dealer();
+	}
+
+	// Start the game
+	public void startGame() {
+		while (player.getMoney() > 0 && deck.checkRemainingCards() > 10) {
+			round();
 		}
-		getBet("What is your bet? ");
-		dealerHand.add(deck.drawCard());
-		playerHand.add(deck.drawCard());
-		hiddenDealerCard = deck.drawCard();
-		playerHand.add(deck.drawCard());
+
+		if (player.getMoney() <= 0) {
+			System.out.println("You're out of money! Game over.");
+		} else {
+			System.out.println("Not enough cards left in the deck. Game over.");
+		}
+
+		endGame();
+	}
+
+	// Game round
+	public void round() {
+		getPlayerBet("What is your bet? ");
+
+		dealer.drawCard(deck);
+		player.drawCard(deck);
+		dealer.drawHiddenCard(deck);
+		player.drawCard(deck);
+
+		if (dealer.checkIfDealerBlackjack()) {
+			dealerBlackjack = dealer.checkIfDealerBlackjack();
+			endRound();
+		} else if (player.checkIfPlayerBlackjack()) {
+			playerBlackjack = player.checkIfPlayerBlackjack();
+			endRound();
+		}
+
+		player.playerMove(deck);
+        dealer.dealerPlay(deck);
+
+        endRound();
 	}
 	
-	// Reset the game
-	public static void resetGame() {
-		dealerHand.clear();
-		playerHand.clear();
-		hiddenDealerCard = null;
+	// Reset the hands
+	private void resetHands() {
+		dealer.clearHand();
+		player.clearHand();
 	}
-	
-	public static void getBet(String prompt) {
+
+	// Get the player's bet
+	public void getPlayerBet(String prompt) {
 		System.out.print(prompt);
-		bet = userInput.nextInt();
-		playerMoney -= bet;
+		double bet = userInput.nextDouble();
+		player.setBet(bet);
 		userInput.nextLine();
 	}
-	
-	// When the player does a hit
-	public static void playerHit() {
-		playerHand.add(deck.drawCard());
-		Integer playerHandValue = checkPlayerHandValue();
-		if (playerHandValue >= 21) {
-			dealerPlay();
-		}
-	}
-	
-	// When the player stands or is bust
-	public static void dealerPlay() {
-		dealerHand.add(hiddenDealerCard);
-		Integer playerHandValue = checkPlayerHandValue();
-		if (playerHandValue >= 21) {
-			endRound();
-		} else {
-			while (checkDealerHandValue() < 17) {
-				dealerHand.add(deck.drawCard());
-			}
-			endRound();
-		}
-	}
-	
-	// When the player doubles. They can no longer hit.
-	public static void doublePlay() {
-		bet *= 2;
-		playerHand.add(deck.drawCard());
-		dealerPlay();
-	}
 
-	/*
-	public static void splitHand() {
-		Integer card1 = playerHand.get(0).getValue();
-		Integer card2 = playerHand.get(1).getValue();
-	}
-	*/
-
-    // Compare the initial dealer hand if blackjack
-	public static void checkIfDealerBlackjack() {
-        ArrayList<Card> actualDealerHand = new ArrayList<>(dealerHand);
-		actualDealerHand.add(hiddenDealerCard);
-		Integer card1 = actualDealerHand.get(0).getValue();
-		Integer card2 = actualDealerHand.get(1).getValue();
-		
-		if (card1 + card2 == 21) {
-			dealerBlackjack = true;
-			endRound();
-		}
-	}
-	
-	// Compare the initial player hand if blackjack
-	public static void checkIfPlayerBlackjack() {
-		Integer card1 = playerHand.get(0).getValue();
-		Integer card2 = playerHand.get(1).getValue();
-		
-		if (card1 + card2 == 21) {
-			playerBlackjack = true;
-			endRound();
-		}
-	}
-	
-	public static Integer checkHandValue(@NotNull ArrayList<Card> hand) {
-	    Integer handValue = 0;
-	    for (Card card : hand) {
-	        handValue += card.getValue();
-	    }
-	    return handValue;
-	}
-
-	public static Integer checkPlayerHandValue() {
-	    return checkHandValue(playerHand);
-	}
-
-	public static Integer checkDealerHandValue() {
-	    return checkHandValue(dealerHand);
-	}
-
-	
 	// Displays the hands of the dealer and the player.
 	public static void displayHands() {
 		clearScreen();
 		System.out.println("Remaining cards: " + deck.checkRemainingCards());
-		System.out.println("Player money: " + "$" + playerMoney);
-		System.out.println("Player bet: " + "$" + bet);
-		System.out.println("Dealer cards " + "(" + checkDealerHandValue() + ")" + ": " + dealerHand.toString()
+		System.out.println("Player money: " + "$" + player.getMoney());
+		System.out.println("Player bet: " + "$" + player.getBet());
+		System.out.println("Dealer cards " + "(" + dealer.checkHandValue() + ")" + ": " + dealer.hand.toString()
 				.replace("[","").replace("]",""));
-		System.out.println("Player cards " + "(" + checkPlayerHandValue() + ")" + ": " + playerHand.toString()
+		System.out.println("Player cards " + "(" + player.checkHandValue() + ")" + ": " + player.hand.toString()
 				.replace("[","").replace("]",""));
 	}
 	
 	// When the player wins
-	public static void playerWins() {
+	public void playerWins() {
 		playerWins += 1;
 		if (playerBlackjack) {
-			playerMoney += bet * 1.5;
+			player.setMoney(player.getBet() * 1.5);
 			playerBlackjack = false;
 		} else {
-			playerMoney += bet * 2;
+			player.setMoney(player.getBet() * 2);
 		}
-		resetGame();
+		resetHands();
 	}
 	
 	// When the dealer wins
-	public static void dealerWins() {
+	public void dealerWins() {
 		dealerWins += 1;
 		if (dealerBlackjack) {
 			dealerBlackjack = false;
 		}
-		resetGame();
+		resetHands();
 	}
 
-	public static void tie() {
-		playerMoney += bet;
-		resetGame();
+	// When it's a tie
+	public void tie() {
+		player.setMoney(player.getBet());
+		resetHands();
 	}
 	
 	// Compare hand values and determine the winner
-    public static void endRound() {
-        Integer playerHandValue = checkPlayerHandValue();
-        Integer dealerHandValue = checkDealerHandValue();
-        
-        displayHands(); // Display final hands
+    public void endRound() {
+        Integer dealerHandValue = dealer.checkHandValue();
+		Integer playerHandValue = player.checkHandValue();
+
+		displayHands(); // Display final hands
         
         if (playerHandValue > 21) {
             System.out.println("Player busts! Dealer wins.\n");
@@ -185,18 +134,17 @@ public class Blackjack {
             System.out.println("It's a tie!\n");
 			tie();
         }
-        
-        resetGame();
-        setUpGame();
     }
 
-	public static void endGame() {
+	// End game
+	public void endGame() {
 		System.out.println("Dealer wins: " + dealerWins);
 		System.out.println("Player wins: " + playerWins);
 		String winner = (playerWins > dealerWins) ? "Player" : "Dealer";
 		System.out.println(winner + " wins!");
 	}
 
+	// Primitive clear screen
 	public static void clearScreen() {
 		for (int i = 0; i < 50; i++) {
 			System.out.println();
@@ -205,25 +153,7 @@ public class Blackjack {
 
 	// Main method
 	public static void main(String[] args) {
-		setUpGame();
-		while (true) {
-			displayHands();
-			checkIfDealerBlackjack();
-			checkIfPlayerBlackjack();
-			System.out.print("What's your move? ");
-			String playerMove = userInput.nextLine().toLowerCase();
-			
-			switch(playerMove) {
-				case "hit":
-					playerHit();
-					break;
-				case "stand":
-					dealerPlay();
-					break;
-				case "double":
-					doublePlay();
-					break;
-			}
-		}
+		Blackjack game = new Blackjack();
+		game.startGame();
 	}
 }
