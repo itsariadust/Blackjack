@@ -1,6 +1,9 @@
+import java.util.Scanner;
+
 public class Player extends Participant {
     private double money;
     private double bet;
+    Scanner userInput = new Scanner(System.in);
 
     public Player(double initialMoney) {
         super();
@@ -22,6 +25,31 @@ public class Player extends Participant {
 
     public void setMoney(double money) {
         this.money += money;
+    }
+
+    // Player's move
+    public void playerMove(Deck deck) {
+        boolean turnOver = false;
+        while (!turnOver && !isBusted()) {
+            Blackjack.displayHands();
+            System.out.print("What's your move? ");
+            String playerMove = userInput.nextLine().toLowerCase();
+            switch(playerMove) {
+                case "hit":
+                    hit(deck);
+                    break;
+                case "stand":
+                    turnOver = true;
+                    break;
+                case "double":
+                    doublePlay(deck);
+                    break;
+            }
+
+            if (isBusted()) {
+                turnOver = true;
+            }
+        }
     }
 
     public void hit(Deck deck) {
