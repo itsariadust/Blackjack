@@ -43,16 +43,11 @@ public class Blackjack {
 		dealer.drawHiddenCard(deck);
 		player.drawCard(deck);
 
-		if (dealer.checkIfDealerBlackjack()) {
-			endRound();
-		} else if (player.checkIfPlayerBlackjack()) {
-			endRound();
+		if (!dealer.checkIfDealerBlackjack() && !player.checkIfPlayerBlackjack()) {
+			player.playerMove(deck);
+			dealer.dealerPlay(deck);
 		}
-
-		player.playerMove(deck);
-        dealer.dealerPlay(deck);
-
-        endRound();
+		endRound();
 	}
 	
 	// Reset the hands
