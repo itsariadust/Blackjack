@@ -45,15 +45,25 @@ public class Blackjack {
 
 		if (!dealer.checkIfDealerBlackjack() && !player.checkIfPlayerBlackjack()) {
 			player.playerMove(deck);
-			dealer.dealerPlay(deck);
+			if (player.bust) {
+				dealer.hand.add(dealer.hiddenSecondCard);
+			} else {
+				dealer.dealerPlay(deck);
+			}
 		}
 		endRound();
 	}
-	
+
 	// Reset the hands
 	private void resetHands() {
 		dealer.clearHand();
 		player.clearHand();
+		removeBust();
+	}
+
+	private void removeBust() {
+		dealer.bust = false;
+		player.bust = false;
 	}
 
 	// Get the player's bet
@@ -75,7 +85,7 @@ public class Blackjack {
 		System.out.println("Player cards " + "(" + player.checkHandValue() + ")" + ": " + player.hand.toString()
 				.replace("[","").replace("]",""));
 	}
-	
+
 	// When the player wins
 	public void playerWins() {
 		playerWins += 1;
@@ -86,7 +96,7 @@ public class Blackjack {
 		}
 		resetHands();
 	}
-	
+
 	// When the dealer wins
 	public void dealerWins() {
 		dealerWins += 1;
@@ -98,14 +108,14 @@ public class Blackjack {
 		player.setMoney(player.getBet());
 		resetHands();
 	}
-	
+
 	// Compare hand values and determine the winner
     public void endRound() {
         Integer dealerHandValue = dealer.checkHandValue();
 		Integer playerHandValue = player.checkHandValue();
 
 		displayHands(); // Display final hands
-        
+
         if (playerHandValue > 21) {
             System.out.println("Player busts! Dealer wins.\n");
             dealerWins();
