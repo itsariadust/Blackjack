@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Participant {
     protected ArrayList<Card> hand;
 
-    static Boolean bust = false;
+    Boolean bust = false;
 
     public Participant() {
         hand = new ArrayList<>();
