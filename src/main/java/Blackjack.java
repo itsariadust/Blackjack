@@ -42,6 +42,7 @@ public class Blackjack {
 		player.drawCard(deck);
 		dealer.drawHiddenCard(deck);
 		player.drawCard(deck);
+		player.checkAce();
 
 		if (!dealer.checkIfDealerBlackjack() && !player.checkIfPlayerBlackjack()) {
 			player.playerMove(deck);

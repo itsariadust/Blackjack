@@ -8,16 +8,14 @@ public class Dealer extends Participant {
     }
 
     public void dealerPlay(Deck deck) {
-        while (checkHandValue() < 17) {
         boolean dealerTurnOver = false;
         hand.add(hiddenSecondCard);
 
-        if (Player.bust) {
-            dealerTurnOver = true;
-        }
+        checkAce();
 
         while (checkHandValue() < 17 && !dealerTurnOver && !isBusted()) {
             drawCard(deck);
+            checkAce();
 
             if (isBusted()) {
                 dealerTurnOver = true;

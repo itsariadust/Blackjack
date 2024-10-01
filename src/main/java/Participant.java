@@ -15,12 +15,27 @@ public class Participant {
         hand.add(deck.drawCard());
     }
 
-    public static Integer calcHandValue(@NotNull ArrayList<Card> hand) {
+    public Integer calcHandValue(@NotNull ArrayList<Card> hand) {
         Integer handValue = 0;
         for (Card card : hand) {
             handValue += card.getValue();
         }
         return handValue;
+    }
+
+    public void checkAce() {
+        Card lastCard = hand.getLast();
+        Integer lastCardValue = lastCard.getValue();
+        if (lastCardValue == 11) {
+            ace(lastCard);
+        }
+    }
+
+    public void ace(Card aceCard) {
+        Integer handValue = checkHandValue();
+        if (handValue > 21) {
+            aceCard.setValue(1);
+        }
     }
 
     public Integer checkHandValue() {

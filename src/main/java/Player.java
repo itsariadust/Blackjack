@@ -55,11 +55,13 @@ public class Player extends Participant {
 
     public void hit(Deck deck) {
         drawCard(deck);
+        checkAce();
     }
 
     public void doublePlay(Deck deck) {
         setBet(bet);
         drawCard(deck);
+        checkAce();
     }
 
     // Compare the initial player hand if blackjack
