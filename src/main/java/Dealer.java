@@ -9,7 +9,20 @@ public class Dealer extends Participant {
 
     public void dealerPlay(Deck deck) {
         while (checkHandValue() < 17) {
+        boolean dealerTurnOver = false;
+        hand.add(hiddenSecondCard);
+
+        if (Player.bust) {
+            dealerTurnOver = true;
+        }
+
+        while (checkHandValue() < 17 && !dealerTurnOver && !isBusted()) {
             drawCard(deck);
+
+            if (isBusted()) {
+                dealerTurnOver = true;
+                bust = true;
+            }
         }
     }
 

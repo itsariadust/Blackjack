@@ -29,8 +29,8 @@ public class Player extends Participant {
 
     // Player's move
     public void playerMove(Deck deck) {
-        boolean turnOver = false;
-        while (!turnOver && !isBusted()) {
+        boolean playerTurnOver = false;
+        while (!playerTurnOver && !isBusted()) {
             Blackjack.displayHands();
             System.out.print("What's your move? ");
             String playerMove = userInput.nextLine().toLowerCase();
@@ -39,7 +39,7 @@ public class Player extends Participant {
                     hit(deck);
                     break;
                 case "stand":
-                    turnOver = true;
+                    playerTurnOver = true;
                     break;
                 case "double":
                     doublePlay(deck);
@@ -47,7 +47,8 @@ public class Player extends Participant {
             }
 
             if (isBusted()) {
-                turnOver = true;
+                playerTurnOver = true;
+                bust = true;
             }
         }
     }
