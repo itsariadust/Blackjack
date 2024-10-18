@@ -9,7 +9,7 @@ public class Deck {
 		// Arrays of the ranks, suits, and values
 		// Note: Find a way to make the ace a 1 or an 11
 		String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-        String[] suits = {"H", "D", "C", "S"};
+        String[] suits = {"♥", "♦", "♣", "♠"};
         Integer[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
 
 		// Create a deck equivalent to eight 52-card decks

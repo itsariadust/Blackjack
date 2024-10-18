@@ -19,7 +19,7 @@ public class Card {
 	
     @Override
     public String toString() {
-    	String str = "%s%s (%d)";
+    	String str = "%s%s";
         return String.format(str, this.rank, this.suit, this.cardValue);
     }
 }
