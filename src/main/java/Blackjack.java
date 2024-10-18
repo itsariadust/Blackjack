@@ -72,6 +72,7 @@ public class Blackjack {
 		System.out.print(prompt);
 		double bet = userInput.nextDouble();
 		player.setBet(bet);
+		player.deductMoney();
 		userInput.nextLine();
 	}
 

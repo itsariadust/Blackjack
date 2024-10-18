@@ -3,7 +3,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class Participant {
-    protected ArrayList<Card> hand;
+    final protected ArrayList<Card> hand;
 
     Boolean bust = false;
 

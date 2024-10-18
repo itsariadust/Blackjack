@@ -16,7 +16,6 @@ public class Player extends Participant {
 
     public void setBet(double bet) {
         this.bet = bet;
-        this.money -= this.bet;
     }
 
     public double getMoney() {
@@ -25,6 +24,13 @@ public class Player extends Participant {
 
     public void setMoney(double money) {
         this.money += money;
+    }
+
+    public void deductMoney() {
+        bet = getBet();
+        money = getMoney();
+
+        this.money -= bet;
     }
 
     // Player's move
@@ -43,6 +49,7 @@ public class Player extends Participant {
                     break;
                 case "double":
                     doublePlay(deck);
+                    playerTurnOver = true;
                     break;
             }
 
@@ -59,7 +66,8 @@ public class Player extends Participant {
     }
 
     public void doublePlay(Deck deck) {
-        setBet(bet);
+        deductMoney();
+        setBet(bet * 2);
         drawCard(deck);
         checkAce();
     }
